@@ -22,15 +22,14 @@ export const Login = () => {
         formState: { errors, isValid },
     } = useForm({
         defaultValues: {
-            email: "tes2t@ya.ru",
-            password: "12345",
+            email: "ildar@mail.ru",
+            password: "1234567",
         },
         mode: "onChange",
     });
 
     const onSubmit = async (values) => {
-        console.log(values);
-        const data = dispatch(fetchAuth(values));
+        const data = await dispatch(fetchAuth(values));
 
         if (!data.payload) {
             return alert("Не удалось авторизоваться");

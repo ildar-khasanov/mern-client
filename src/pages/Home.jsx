@@ -14,6 +14,8 @@ import { fetchPosts, fetchTags } from "../redux/slices/posts";
 export const Home = () => {
     const dispatch = useDispatch();
     const { posts, tags } = useSelector((state) => state.posts);
+    const userData = useSelector((state) => state.auth.data);
+    console.log(posts);
 
     useEffect(() => {
         // 2:23
@@ -23,7 +25,6 @@ export const Home = () => {
 
     const isLoadingPosts = posts.status === "loading";
     const isLoadingTags = tags.status === "loading";
-    console.log(posts);
 
     return (
         <>
@@ -45,13 +46,16 @@ export const Home = () => {
                                 <Post
                                     id={post._id}
                                     title={post.title}
-                                    imageUrl={post.imageUrl}
+                                    imageUrl={
+                                        post.imageUrl &&
+                                        `http://localhost:8000${post.imageUrl} `
+                                    }
                                     user={post.user}
                                     createdAt={post.createdAt}
                                     viewsCount={post.viewsCount}
                                     commentsCount={3}
                                     tags={post.tags}
-                                    isEditable
+                                    isEditable={userData?._id === post.user._id}
                                 />
                             )
                     )}

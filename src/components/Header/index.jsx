@@ -14,6 +14,7 @@ export const Header = () => {
     const onClickLogout = () => {
         if (window.confirm("Вы действительно хотите выйти из аккаунта?"))
             dispatch(logout());
+        localStorage.removeItem("token");
     };
 
     return (
@@ -21,12 +22,12 @@ export const Header = () => {
             <Container maxWidth="lg">
                 <div className={styles.inner}>
                     <Link className={styles.logo} to="/">
-                        <div>ARCHAKOV BLOG</div>
+                        <div>KHASANOV BLOG</div>
                     </Link>
                     <div className={styles.buttons}>
                         {isAuth ? (
                             <>
-                                <Link to="/posts/create">
+                                <Link to="/add-post">
                                     <Button variant="contained">
                                         Написать статью
                                     </Button>

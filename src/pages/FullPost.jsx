@@ -15,12 +15,12 @@ export const FullPost = () => {
         axios
             .get(`/posts/${id}`)
             .then((res) => {
+                console.log(res);
                 setData(res.data);
                 setIsLoading(false);
             })
             .catch((err) => console.log(err));
     }, []);
-    console.log(data);
 
     if (loading) {
         return <Post isLoading={loading} />;
@@ -31,7 +31,7 @@ export const FullPost = () => {
             <Post
                 id={1}
                 title={data.title}
-                imageUrl={data.imageUrl}
+                imageUrl={`http://localhost:8000${data.imageUrl}`}
                 user={data.user}
                 createdAt={data.createdAt}
                 viewsCount={data.viewsCount}
@@ -39,14 +39,7 @@ export const FullPost = () => {
                 tags={data.tags}
                 isFullPost
             >
-                <p>
-                    Hey there! 👋 I'm starting a new series called "Roast the
-                    Code", where I will share some code, and let YOU roast and
-                    improve it. There's not much more to it, just be polite and
-                    constructive, this is an exercise so we can all learn
-                    together. Now then, head over to the repo and roast as hard
-                    as you can!!
-                </p>
+                <p>{data.text}</p>
             </Post>
             <CommentsBlock
                 items={[
