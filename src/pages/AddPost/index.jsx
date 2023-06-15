@@ -15,7 +15,6 @@ export const AddPost = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const isEditing = Boolean(id);
-    console.log(id);
     const isAuth = useSelector(selectedIsAuth);
     const [loading, setLoading] = useState(false);
     const [feilds, setFeilds] = useState({
@@ -24,21 +23,7 @@ export const AddPost = () => {
         imageUrl: "",
     });
     const inputFileRef = useRef(null);
-
-    useEffect(() => {
-        if (id) {
-            axios
-                .get(`/posts/${id}`)
-                .then(({ data }) => {
-                    const { title, tags, text, imageUrl } = data;
-                    setFeilds({ title, tags, text, imageUrl });
-                })
-                .catch((err) => {
-                    console.warn(err);
-                    alert("Не удалось получить данные о статьи!");
-                });
-        }
-    }, []);
+    console.log(feilds);
 
     const handleChangeFile = async (event) => {
         try {
@@ -64,14 +49,35 @@ export const AddPost = () => {
     const onSubmit = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.post("/posts", feilds);
-            const id = data._id;
-            navigate(`/posts/${id}`);
+
+            const { data } = !isEditing
+                ? await axios.post("/posts", feilds)
+                : await axios.patch(`/posts/${id}`, feilds);
+            const _id = isEditing ? id : data._id;
+
+            navigate(`/posts/${_id}`);
         } catch (error) {
             console.warn(error);
             alert("Не удалось создать статью!");
         }
     };
+
+    useEffect(() => {
+        if (id) {
+            axios
+                .get(`/posts/${id}`)
+                .then(({ data }) => {
+                    const { title, tags, text, imageUrl } = data;
+                    const tagsJoin = tags.join(",");
+                    console.log(tagsJoin);
+                    setFeilds({ title, tags: tagsJoin, text, imageUrl });
+                })
+                .catch((err) => {
+                    console.warn(err);
+                    alert("Не удалось получить данные о статьи!");
+                });
+        }
+    }, []);
 
     const options = React.useMemo(
         () => ({

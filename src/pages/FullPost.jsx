@@ -31,7 +31,9 @@ export const FullPost = () => {
             <Post
                 id={1}
                 title={data.title}
-                imageUrl={`http://localhost:8000${data.imageUrl}`}
+                imageUrl={
+                    data.imageUrl ? `http://localhost:8000${data.imageUrl}` : ""
+                }
                 user={data.user}
                 createdAt={data.createdAt}
                 viewsCount={data.viewsCount}
